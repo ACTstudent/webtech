@@ -1,4 +1,4 @@
-/* Base styles and variables - Bootstrap inspired */
+/* Base styles and variables - Nike Inspired Black/White/Gray Theme */
 * {
     margin: 0;
     padding: 0;
@@ -6,45 +6,46 @@
 }
 
 :root {
-    /* Bootstrap-like color mapping (kept current values for black/gray theme) */
-    --primary: #000; /* Dark for primary actions */
+    /* Nike-like color mapping: Black, White, Light Gray */
+    --primary: #000; /* Pure Black for primary actions/text */
     --primary-hover: #333;
-    --secondary: #6c757d; /* Muted color */
+    --secondary: #fff; /* White is the secondary color */
     --success: #198754;
     --danger: #dc3545;
     
     /* Utility colors */
-    --bg-light: #f8f9fa; /* Light background */
-    --bg-gray: #f9fafb;
-    --border: #dee2e6; /* Standard border color */
+    --bg-light: #f5f5f5; /* Very light gray, typical Nike background */
+    --bg-gray: #eee; /* Slightly darker light gray for contrast sections */
+    --border: #ddd; /* Light border color */
     
     /* Text colors */
-    --text-dark: #212529;
-    --text-gray: #6c757d;
+    --text-dark: #000; /* Pure Black text */
+    --text-gray: #444; /* Dark gray for subtle text */
     
     /* Spacing and radius */
     --spacer: 1rem;
-    --border-radius: 0.375rem;
+    --border-radius: 0; /* Using sharp corners for a modern, bold look */
 }
 
 body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Standard sans-serif stack */
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Standard sans-serif stack - matches Nike's typography */
     line-height: 1.5;
     color: var(--text-dark);
     background-color: #fff; /* White body background */
 }
 
-/* Utility Class for Content Centering (Equivalent to Bootstrap .container) */
+/* Utility Class for Content Centering */
 .section-container {
     max-width: 1280px;
     margin: 0 auto;
     padding: var(--spacer) 2rem;
 }
 
-/* Navbar - Fixed top and elevated (equivalent to Bootstrap .navbar-expand-lg .fixed-top) */
+/* Navbar - Minimalist and flat */
 #navbar {
     background: white;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Subtle shadow */
+    box-shadow: none; /* Remove subtle shadow for flat design */
+    border-bottom: 1px solid var(--border); /* Minimal separator */
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -53,7 +54,7 @@ body {
 .nav-container {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 1rem 2rem;
+    padding: 0.75rem 2rem; /* Reduced padding */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -62,28 +63,31 @@ body {
 .logo h1 {
     font-size: 1.5rem;
     cursor: pointer;
+    font-weight: 900; /* Bolder logo */
 }
 
 .nav-links {
     display: flex;
-    gap: 1.5rem; /* Reduced gap slightly */
+    gap: 2rem; /* Increased gap for more whitespace */
 }
 
 .nav-links a {
     text-decoration: none;
     color: var(--text-dark);
-    padding: 0.5rem 0; /* Align with standard nav links */
+    padding: 0.5rem 0;
     transition: color 0.3s;
+    font-weight: 600; /* Bolder links */
+    text-transform: uppercase; /* Nike style */
 }
 
 .nav-links a:hover {
-    color: var(--primary); /* Hover uses primary color */
+    color: var(--primary);
 }
 
 .nav-actions {
     display: flex;
     align-items: center;
-    gap: 0.75rem; /* Reduced gap */
+    gap: 1rem;
 }
 
 .cart-btn {
@@ -102,34 +106,36 @@ body {
 
 .cart-count {
     position: absolute;
-    top: -5px; /* Adjusted position */
+    top: -5px;
     right: -5px;
-    background: var(--danger); /* Red badge for count */
+    background: var(--danger);
     color: white;
     font-size: 0.75rem;
     padding: 0.125rem 0.375rem;
-    border-radius: 50%; /* Perfect circle */
+    border-radius: 50%;
     min-width: 1.5rem;
     height: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-weight: 700;
 }
 
-/* Buttons - Standardized padding and border radius (equivalent to Bootstrap .btn) */
+/* Buttons - Sharp edges, bold text, uppercase */
 .btn-primary, .btn-outline, .btn-secondary, .btn-danger {
-    padding: 0.5rem 1rem;
-    border-radius: var(--border-radius);
+    padding: 0.75rem 1.5rem; /* Increased padding */
+    border-radius: var(--border-radius); /* Sharp corners */
     cursor: pointer;
     font-size: 1rem;
     transition: all 0.2s ease-in-out;
-    font-weight: 600;
+    font-weight: 700; /* Bold */
     text-align: center;
-    text-decoration: none; /* For links styled as buttons */
+    text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    text-transform: uppercase; /* Nike style */
 }
 
 .btn-primary {
@@ -145,7 +151,7 @@ body {
 
 .btn-outline {
     background: transparent;
-    border: 1px solid var(--border);
+    border: 1px solid var(--primary); /* Stronger primary border for outline */
     color: var(--text-dark);
 }
 
@@ -197,10 +203,10 @@ body {
     padding: 0.5rem 0;
 }
 
-/* Hero Section - Jumbotron style */
+/* Hero Section - Clean, bold, white background */
 .hero {
-    background: linear-gradient(to right, #2c3e50, #4c627a); /* Dark blue/gray gradient */
-    color: white;
+    background: white; /* Change to white */
+    color: var(--text-dark); /* Ensure text is dark on white */
     padding: 6rem 2rem;
 }
 
@@ -214,13 +220,16 @@ body {
 }
 
 .hero h1 {
-    font-size: 3.5rem;
+    font-size: 4rem; /* Larger, bolder heading */
     margin-bottom: 1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1.1;
 }
 
 .hero p {
     font-size: 1.25rem;
-    color: #e9ecef;
+    color: var(--text-dark); /* Ensure text color works with new background */
     margin-bottom: 2rem;
 }
 
@@ -229,12 +238,12 @@ body {
     height: 400px;
     object-fit: cover;
     border-radius: var(--border-radius);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Elevated shadow */
+    box-shadow: none; /* Remove shadow */
 }
 
-/* Features - Card-like display */
+/* Features - Minimalist cards */
 .features {
-    background: var(--bg-light);
+    background: white; /* Clean white background */
     padding: 4rem 2rem;
 }
 
@@ -254,7 +263,8 @@ body {
     padding: 1.5rem;
     background: white;
     border-radius: var(--border-radius);
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    box-shadow: none; /* Remove shadows */
+    border: 1px solid var(--border); /* Subtle border for definition */
 }
 
 .feature-icon {
@@ -266,7 +276,7 @@ body {
     align-items: center;
     justify-content: center;
     margin: 0 auto 1rem;
-    border: 1px solid var(--border);
+    border: none;
     flex-shrink: 0;
 }
 
@@ -277,6 +287,7 @@ body {
 
 .feature h3 {
     margin-bottom: 0.5rem;
+    font-weight: 700;
 }
 
 .feature p {
@@ -287,6 +298,7 @@ body {
 /* Products Grid */
 .featured-products {
     padding: 4rem 0;
+    background: var(--bg-light); /* Use light gray background for product sections */
 }
 
 .products-page {
@@ -299,8 +311,10 @@ body {
 }
 
 .section-header h2 {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     margin-bottom: 0.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
 }
 
 .section-header p {
@@ -337,23 +351,23 @@ body {
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+    gap: 3rem; /* Increased gap for more whitespace */
     margin-bottom: 3rem;
     padding: 0 2rem;
 }
 
 .product-card {
     background: white;
-    border: 1px solid var(--border);
+    border: none; /* Removed border */
     border-radius: var(--border-radius);
     overflow: hidden;
     cursor: pointer;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: box-shadow 0.2s ease-in-out;
 }
 
 .product-card:hover {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    transform: translateY(-5px);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05); /* Very subtle hover */
+    transform: none; /* Remove lift effect */
 }
 
 .product-image-container {
@@ -363,13 +377,13 @@ body {
 
 .product-image {
     width: 100%;
-    height: 280px;
+    height: 350px; /* Taller image */
     object-fit: cover;
     transition: transform 0.3s;
 }
 
 .product-card:hover .product-image {
-    transform: scale(1.05);
+    transform: scale(1.0); /* Remove zoom effect */
 }
 
 .product-rating {
@@ -394,18 +408,19 @@ body {
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    height: 100%; /* Ensure content fills card */
+    height: 100%;
 }
 
 .product-category {
     color: var(--text-gray);
     font-size: 0.875rem;
     margin-bottom: 0.25rem;
+    text-transform: uppercase;
 }
 
 .product-name {
     font-size: 1.25rem;
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 0.5rem;
 }
 
@@ -492,7 +507,7 @@ body {
 }
 
 
-/* Cart Page - Card list alignment */
+/* Cart Page - Minimalist cards */
 .cart-page {
     max-width: 1280px;
     margin: 0 auto;
@@ -507,13 +522,13 @@ body {
 
 .cart-item {
     background: white;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border); /* Defined border */
     border-radius: var(--border-radius);
     padding: 1rem;
     display: flex;
     align-items: center;
     gap: 1rem;
-    box-shadow: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.05); /* Lighter shadow */
+    box-shadow: none;
 }
 
 .cart-item-image {
@@ -610,6 +625,7 @@ body {
 /* NEW: Checkout Page Styles */
 .checkout-page {
     padding: 3rem 0;
+    background: var(--bg-light);
 }
 
 .checkout-grid {
@@ -624,7 +640,7 @@ body {
     background: white;
     border: 1px solid var(--border);
     border-radius: var(--border-radius);
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    box-shadow: none;
 }
 
 .checkout-summary {
@@ -636,7 +652,7 @@ body {
 }
 
 .checkout-items {
-    max-height: 250px; /* Limit height for summary list */
+    max-height: 250px;
     overflow-y: auto;
     margin-bottom: 1rem;
     padding-bottom: 1rem;
@@ -681,7 +697,7 @@ body {
     background: white;
     border: 1px solid var(--border);
     border-radius: var(--border-radius);
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    box-shadow: none;
     padding: 2rem;
     width: 100%;
     max-width: 450px;
@@ -721,6 +737,7 @@ body {
     max-width: 1280px;
     margin: 0 auto;
     padding: 3rem 2rem;
+    background: white;
 }
 
 .tabs {
@@ -729,17 +746,18 @@ body {
 
 .tab-btn {
     padding: 0.75rem 1rem;
-    margin-bottom: -1px; /* Overlap border */
+    margin-bottom: -1px;
     border: 1px solid transparent;
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
     transition: all 0.2s;
+    font-weight: 500;
 }
 
 .tab-btn.active {
     border-color: var(--border) var(--border) white;
     border-bottom-color: transparent;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--primary);
 }
 
@@ -748,7 +766,7 @@ body {
     border: 1px solid var(--border);
     border-radius: var(--border-radius);
     padding: 2rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    box-shadow: none;
 }
 
 .form-grid {
@@ -759,10 +777,14 @@ body {
 
 /* About Page */
 .about-hero {
-    background: linear-gradient(to right, #2c3e50, #4c627a);
-    color: white;
+    background: var(--bg-light); /* Light Gray background */
+    color: var(--text-dark);
     padding: 4rem 2rem;
     text-align: center;
+}
+
+.about-hero h1 {
+    font-weight: 900;
 }
 
 .about-section {
@@ -784,7 +806,8 @@ body {
     height: 400px;
     object-fit: cover;
     border-radius: var(--border-radius);
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    box-shadow: none;
+    border: 1px solid var(--border);
 }
 
 /* NEW: Team Grid Styles */
@@ -797,9 +820,10 @@ body {
 }
 
 .team-member.card {
-    /* Uses existing .card style for border/shadow and applies specific padding */
     padding: 1.5rem;
     background: var(--bg-light);
+    box-shadow: none;
+    border-radius: var(--border-radius);
 }
 
 .values-grid {
@@ -814,33 +838,38 @@ body {
     padding: 2rem 1rem;
     border: 1px solid var(--border);
     border-radius: var(--border-radius);
-    background: var(--bg-light);
+    background: white;
+    box-shadow: none;
 }
 
 .value-icon {
     width: 64px;
     height: 64px;
-    background: white;
+    background: var(--bg-light);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 1rem;
     color: var(--primary);
-    border: 1px solid var(--border);
+    border: none;
 }
 
-.btn-outline { /* Align the social media button icons */
+.btn-outline {
     display: inline-flex;
     align-items: center;
 }
 
 /* Contact Page */
 .contact-hero {
-    background: linear-gradient(to right, #2c3e50, #4c627a);
-    color: white;
+    background: var(--bg-light);
+    color: var(--text-dark);
     padding: 4rem 2rem;
-    text-align: center; /* Adjustment for centered text */
+    text-align: center;
+}
+
+.contact-hero h1 {
+    font-weight: 900;
 }
 
 .contact-page {
@@ -861,7 +890,7 @@ body {
     border: 1px solid var(--border);
     border-radius: var(--border-radius);
     background: white;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    box-shadow: none;
 }
 
 .contact-info-card {
@@ -885,30 +914,31 @@ body {
     margin-top: 2px;
 }
 
-/* FOOTER STYLES */
+/* FOOTER STYLES - Solid Black */
 footer {
-    background: #212529; /* Dark footer */
+    background: var(--primary); /* Use primary black color */
     color: white;
     padding: 3rem 2rem;
 }
 
 .footer-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr; /* First column wider */
+    grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: 2rem;
     padding-bottom: 2rem;
-    border-bottom: 1px solid #343a40;
+    border-bottom: 1px solid #444; /* Slightly lighter line on black */
 }
 
 .footer-col h3, .footer-col h4 {
     font-size: 1.25rem;
     margin-bottom: 1rem;
     color: white;
+    font-weight: 700;
 }
 
 .footer-col p {
     font-size: 0.9rem;
-    color: #adb5bd;
+    color: #bbb;
     line-height: 1.6;
 }
 
@@ -922,7 +952,7 @@ footer {
 }
 
 .footer-col a {
-    color: #adb5bd;
+    color: #bbb;
     text-decoration: none;
     transition: color 0.3s;
     font-size: 0.9rem;
@@ -936,7 +966,7 @@ footer {
     text-align: center;
     padding-top: 2rem;
     font-size: 0.875rem;
-    color: #adb5bd;
+    color: #bbb;
 }
 
 /* Responsive (equivalent to Bootstrap breakpoints) */
@@ -1036,6 +1066,7 @@ footer {
 @media (max-width: 576px) {
     .products-grid {
         grid-template-columns: 1fr;
+        gap: 2rem;
     }
     .hero {
         padding: 4rem 1rem;
