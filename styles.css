@@ -607,6 +607,66 @@ body {
     color: var(--primary);
 }
 
+/* NEW: Checkout Page Styles */
+.checkout-page {
+    padding: 3rem 0;
+}
+
+.checkout-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    padding: 0 2rem;
+}
+
+.checkout-form-container {
+    padding: 1.5rem;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.checkout-summary {
+    background: var(--bg-light);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    height: fit-content;
+}
+
+.checkout-items {
+    max-height: 250px; /* Limit height for summary list */
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.checkout-item {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    align-items: center;
+}
+
+.checkout-item-image {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    flex-shrink: 0;
+}
+
+.checkout-item-info {
+    flex: 1;
+}
+
+.checkout-item-meta {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+}
+
 /* Forms - Card and Control styling */
 .form-container {
     min-height: calc(100vh - 200px);
@@ -889,7 +949,7 @@ footer {
         display: flex;
     }
 
-    .hero-container, .product-details-grid, .cart-grid, .contact-content-grid {
+    .hero-container, .product-details-grid, .cart-grid, .contact-content-grid, .checkout-grid {
         grid-template-columns: 1fr;
     }
 
