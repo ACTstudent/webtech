@@ -57,6 +57,31 @@ function updateQuantity(productId, size, color, quantity) {
     }
 }
 
+// NEW: Order processing logic
+function placeOrder(shippingInfo, total) {
+    // In a real app, this would send data to a server and get a real order ID.
+    const orderId = 'SS-' + Date.now().toString().slice(-6) + Math.floor(Math.random() * 100);
+    
+    // Store order details (simulated)
+    const orderDetails = {
+        id: orderId,
+        items: [...cart], // Copy of cart items
+        total: total,
+        date: new Date().toLocaleDateString(),
+        shipping: shippingInfo
+    };
+    
+    // Clear the cart after placing the order
+    clearCart();
+    
+    // Simulate saving the order history (using localStorage for persistence simulation)
+    const orderHistory = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+    orderHistory.unshift(orderDetails); // Add to the front
+    localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
+    
+    return orderId;
+}
+
 function clearCart() {
     cart = [];
     saveCart();
