@@ -32,7 +32,16 @@ body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     line-height: 1.5;
     color: var(--text-dark);
-    background-color: var(--bg-light); 
+    background-color: var(--bg-light);
+    /* --- FIX: Sticky Footer Implementation --- */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* FIX: Ensure main content takes up remaining vertical space */
+#main-content {
+    flex: 1 0 auto;
 }
 
 /* Utility Class for Content Centering */
@@ -50,6 +59,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
+    flex-shrink: 0; /* Keep navbar fixed size */
 }
 
 .nav-container {
@@ -567,6 +577,7 @@ footer {
     background: var(--primary); 
     color: white;
     padding: 4rem 2rem;
+    flex-shrink: 0; /* Keep footer fixed size */
 }
 
 .footer-grid {
