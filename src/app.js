@@ -7,10 +7,22 @@ let currentFilters = {
     search: ''
 };
 
+// Helper function for user feedback (Replaces alert())
+function displayMessage(message, type = 'success') {
+    // This is a placeholder for a proper toast/modal system.
+    // Use console.log for silent feedback in this environment, but this function
+    // is where you would integrate a non-blocking UI notification.
+    console.log(`[${type.toUpperCase()}] ${message}`);
+    alert(message);
+}
+
 function navigateTo(page, productId = null) {
     currentPage = page;
     if (productId) {
-        currentProduct = products.find(p => p.id === productId);
+        // Ensure products array is available (from data.js)
+        if (typeof products !== 'undefined') {
+            currentProduct = products.find(p => p.id === productId);
+        }
     }
     renderPage();
     window.scrollTo(0, 0);
@@ -98,7 +110,7 @@ function renderHomePage() {
         </section>
 
         <section class="features">
-            <div class="features-container">
+            <div class="section-container features-container">
                 <div class="feature-card">
                     <div class="feature-icon">
                         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -128,6 +140,15 @@ function renderHomePage() {
                     <h3>Easy Returns</h3>
                     <p>Not satisfied? Return within 30 days for a full refund.</p>
                 </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h3>Secure Checkout</h3>
+                    <p>Shop with confidence using our secure payment gateway.</p>
+                </div>
             </div>
         </section>
 
@@ -140,7 +161,7 @@ function renderHomePage() {
                 <div class="products-grid">
                     ${featuredProducts.map(product => renderProductCard(product)).join('')}
                 </div>
-                <div class="view-all">
+                <div class="view-all" style="text-align: center;">
                     <button class="btn-secondary" onclick="navigateTo('products')">View All Products</button>
                 </div>
             </div>
@@ -168,18 +189,22 @@ function renderProductsPage() {
                             <option value="Casual" ${currentFilters.category === 'Casual' ? 'selected' : ''}>Casual</option>
                             <option value="Athletic" ${currentFilters.category === 'Athletic' ? 'selected' : ''}>Athletic</option>
                             <option value="Formal" ${currentFilters.category === 'Formal' ? 'selected' : ''}>Formal</option>
+                            <option value="Basketball" ${currentFilters.category === 'Basketball' ? 'selected' : ''}>Basketball</option>
+                            <option value="Outdoor" ${currentFilters.category === 'Outdoor' ? 'selected' : ''}>Outdoor</option>
                         </select>
                         <select id="price-filter" onchange="updatePriceRange(this.value)">
                             <option value="all" ${currentFilters.priceRange === 'all' ? 'selected' : ''}>All Prices</option>
-                            <option value="0-50" ${currentFilters.priceRange === '0-50' ? 'selected' : ''}>Under $50</option>
-                            <option value="50-100" ${currentFilters.priceRange === '50-100' ? 'selected' : ''}>$50 - $100</option>
+                            <option value="0-100" ${currentFilters.priceRange === '0-100' ? 'selected' : ''}>Under $100</option>
                             <option value="100-150" ${currentFilters.priceRange === '100-150' ? 'selected' : ''}>$100 - $150</option>
                             <option value="150+" ${currentFilters.priceRange === '150+' ? 'selected' : ''}>Over $150</option>
                         </select>
                     </div>
                 </div>
                 <div class="products-grid">
-                    ${filteredProducts.map(product => renderProductCard(product)).join('')}
+                    ${filteredProducts.length > 0 
+                        ? filteredProducts.map(product => renderProductCard(product)).join('')
+                        : '<p style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--text-gray);">No products match your current filters.</p>'
+                    }
                 </div>
             </div>
         </section>
@@ -205,23 +230,30 @@ function renderProductDetailsPage() {
                     <p class="description">${currentProduct.description}</p>
                     <div class="options">
                         <div class="option-group">
-                            <label>Size:</label>
+                            <label for="size-select">Size:</label>
                             <select id="size-select">
                                 ${currentProduct.sizes.map(size => `<option value="${size}">${size}</option>`).join('')}
                             </select>
                         </div>
                         <div class="option-group">
-                            <label>Color:</label>
+                            <label for="color-select">Color:</label>
                             <select id="color-select">
                                 ${currentProduct.colors.map(color => `<option value="${color}">${color}</option>`).join('')}
                             </select>
                         </div>
                         <div class="option-group">
-                            <label>Quantity:</label>
+                            <label for="quantity-input">Quantity:</label>
                             <input type="number" id="quantity-input" value="1" min="1" max="10">
                         </div>
                     </div>
-                    <button class="btn-primary add-to-cart-btn" data-product-id="${currentProduct.id}">Add to Cart</button>
+                    <button class="btn-primary add-to-cart-btn" data-product-id="${currentProduct.id}">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <path d="M16 10a4 4 0 0 1-8 0"/>
+                        </svg>
+                        Add to Cart
+                    </button>
                     <div class="product-meta">
                         <p><strong>Category:</strong> ${currentProduct.category}</p>
                     </div>
@@ -232,7 +264,12 @@ function renderProductDetailsPage() {
 }
 
 function renderCartPage() {
-    const cartItems = cart; // Access global 'cart' variable from src/cart.js
+    // Access global 'cart' and 'getCartTotal' from src/cart.js
+    if (typeof cart === 'undefined' || typeof getCartTotal === 'undefined') {
+        return `<section class="empty-cart"><div class="section-container"><h1>Cart System Error</h1><p>The cart system is not initialized correctly.</p></div></section>`;
+    }
+    
+    const cartItems = cart; 
     const total = getCartTotal();
 
     if (cartItems.length === 0) {
@@ -268,7 +305,11 @@ function renderCartPage() {
                                 <button onclick="updateCartQuantity(${item.id}, '${item.selectedSize}', '${item.selectedColor}', ${item.quantity + 1})">+</button>
                             </div>
                             <div class="item-total">$${(item.price * item.quantity).toFixed(2)}</div>
-                            <button class="remove-btn btn-danger" onclick="removeFromCart(${item.id}, '${item.selectedSize}', '${item.selectedColor}')">Remove</button>
+                            <button class="remove-btn btn-danger" onclick="removeFromCart(${item.id}, '${item.selectedSize}', '${item.selectedColor}')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                </svg>
+                            </button>
                         </div>
                     `).join('')}
                 </div>
@@ -286,7 +327,7 @@ function renderCartPage() {
                         <span>Total:</span>
                         <span>$${total.toFixed(2)}</span>
                     </div>
-                    <button class="btn-primary">Checkout</button>
+                    <button class="btn-primary" style="width: 100%;">Checkout</button>
                 </div>
             </div>
         </section>
@@ -309,7 +350,7 @@ function renderLoginPage() {
                         <label for="password">Password</label>
                         <input type="password" id="password" name="password" required>
                     </div>
-                    <button type="submit" class="btn-primary">Login</button>
+                    <button type="submit" class="btn-primary" style="width: 100%;">Login</button>
                 </form>
                 <div class="form-footer">
                     Don't have an account? <a href="#" onclick="navigateTo('signup')">Sign up</a>
@@ -339,7 +380,7 @@ function renderSignupPage() {
                         <label for="password">Password</label>
                         <input type="password" id="password" name="password" required>
                     </div>
-                    <button type="submit" class="btn-primary">Sign Up</button>
+                    <button type="submit" class="btn-primary" style="width: 100%;">Sign Up</button>
                 </form>
                 <div class="form-footer">
                     Already have an account? <a href="#" onclick="navigateTo('login')">Login</a>
@@ -350,7 +391,8 @@ function renderSignupPage() {
 }
 
 function renderAccountPage() {
-    if (!currentUser) {
+    // Check for global 'currentUser' from auth.js
+    if (typeof currentUser === 'undefined' || !currentUser) {
         navigateTo('login');
         return '';
     }
@@ -381,11 +423,11 @@ function renderAccountPage() {
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="profile-name">Name</label>
-                                <input type="text" id="profile-name" name="name" value="${currentUser.name}" required>
+                                <input type="text" id="profile-name" name="name" value="${currentUser.name || ''}" required>
                             </div>
                             <div class="form-group">
                                 <label for="profile-email">Email</label>
-                                <input type="email" id="profile-email" name="email" value="${currentUser.email}" required>
+                                <input type="email" id="profile-email" name="email" value="${currentUser.email || ''}" required>
                             </div>
                             <div class="form-group">
                                 <label for="profile-phone">Phone</label>
@@ -393,10 +435,10 @@ function renderAccountPage() {
                             </div>
                             <div class="form-group">
                                 <label for="profile-address">Address</label>
-                                <textarea id="profile-address" name="address">${currentUser.address || ''}</textarea>
+                                <textarea id="profile-address" name="address" rows="3">${currentUser.address || ''}</textarea>
                             </div>
                         </div>
-                        <button type="submit" class="btn-primary">Update Profile</button>
+                        <button type="submit" class="btn-primary" style="margin-top: 1rem;">Update Profile</button>
                     </form>
                 </div>
                 <div id="orders-tab" class="tab-content card">
@@ -458,7 +500,6 @@ function renderAboutPage() {
                     <p>We continuously innovate to bring you the latest in shoe technology and design.</p>
                 </div>
             </div>
-            <!-- NEW: Social Media Section -->
             <div class="section-header" style="margin-top: 4rem;">
                 <h2>Connect With Us</h2>
                 <p>Follow us on social media for the latest updates and promotions!</p>
@@ -565,7 +606,13 @@ function renderProductCard(product) {
                 <p class="product-category">${product.category}</p>
                 <h3 class="product-name">${product.name}</h3>
                 <p class="product-price">$${product.price.toFixed(2)}</p>
-                <button class="btn-primary add-to-cart-btn" data-product-id="${product.id}" onclick="event.stopPropagation(); addToCartFromCard(${product.id})">Add to Cart</button>
+                <button class="btn-primary add-to-cart-btn" data-product-id="${product.id}" onclick="event.stopPropagation(); addToCartFromCard(${product.id})">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                    </svg>
+                    Add to Cart
+                </button>
             </div>
         </div>
     `;
@@ -589,6 +636,9 @@ function loadFeaturedProducts() {
 }
 
 function filterProducts() {
+    // Ensure products array is available (from data.js)
+    if (typeof products === 'undefined') return [];
+
     return products.filter(product => {
         const matchesCategory = currentFilters.category === 'all' || product.category === currentFilters.category;
         const matchesSearch = currentFilters.search === '' || product.name.toLowerCase().includes(currentFilters.search.toLowerCase());
@@ -627,16 +677,14 @@ function handleAddToCart(event) {
     const quantity = parseInt(document.getElementById('quantity-input')?.value || 1);
 
     addToCart(product, size, color, quantity);
-    // Note: alert() is used here but should ideally be replaced with a custom modal UI in a production app.
-    alert('Product added to cart!');
+    displayMessage('Product added to cart!');
 }
 
 function addToCartFromCard(productId) {
     const product = products.find(p => p.id === productId);
     // When adding from card, we assume default size/color and a quantity of 1
     addToCart(product, product.sizes[0], product.colors[0], 1);
-    // Note: alert() is used here but should ideally be replaced with a custom modal UI in a production app.
-    alert('Product added to cart!');
+    displayMessage('Product added to cart!');
 }
 
 function updateCartQuantity(productId, size, color, quantity) {
@@ -662,10 +710,10 @@ function handleLogin(event) {
     const password = formData.get('password');
 
     if (login(email, password)) {
+        displayMessage('Login successful!');
         navigateTo('home');
     } else {
-        // Note: alert() is used here but should ideally be replaced with a custom modal UI in a production app.
-        alert('Invalid credentials');
+        displayMessage('Invalid credentials', 'error');
     }
 }
 
@@ -677,10 +725,10 @@ function handleSignup(event) {
     const password = formData.get('password');
 
     if (signup(name, email, password)) {
+        displayMessage('Signup successful! Welcome to StepStyle.', 'success');
         navigateTo('home');
     } else {
-        // Note: alert() is used here but should ideally be replaced with a custom modal UI in a production app.
-        alert('Signup failed');
+        displayMessage('Signup failed', 'error');
     }
 }
 
@@ -690,14 +738,12 @@ function handleProfileUpdate(event) {
     const data = Object.fromEntries(formData);
 
     updateProfile(data);
-    // Note: alert() is used here but should ideally be replaced with a custom modal UI in a production app.
-    alert('Profile updated successfully!');
+    displayMessage('Profile updated successfully!');
 }
 
 function handleContact(event) {
     event.preventDefault();
-    // Note: alert() is used here but should ideally be replaced with a custom modal UI in a production app.
-    alert('Thank you for your message! We\'ll get back to you soon.');
+    displayMessage('Thank you for your message! We\'ll get back to you soon.');
     event.target.reset();
 }
 
