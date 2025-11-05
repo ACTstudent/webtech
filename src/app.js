@@ -108,6 +108,12 @@ function initPage() {
     if (checkoutForm) {
         checkoutForm.addEventListener('submit', handleCheckout);
     }
+
+    // FIX: Cart Action Handler using delegation
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    if (cartItemsContainer) {
+        cartItemsContainer.addEventListener('click', handleCartAction);
+    }
 }
 
 function renderHomePage() {
@@ -121,7 +127,7 @@ function renderHomePage() {
                     <button class="btn-primary" onclick="navigateTo('products')">Shop Now</button>
                 </div>
                 <div class="hero-image">
-                    <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzaG9lc3xlbnwxfHx8fDE3NjIyMTkxNjl8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Premium Shoes">
+                    <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxzaG9lc3xlbnwxfHx8fDE3NjIyMTkxNjl8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Premium Shoes">
                 </div>
             </div>
         </section>
@@ -299,7 +305,7 @@ function renderCartPage() {
     return `
         <section class="cart-page">
             <div class="cart-grid">
-                <div class="cart-items">
+                <div class="cart-items" id="cart-items-container">
                     <h1>Shopping Cart</h1>
                     ${cartItems.map(item => `
                         <div class="cart-item">
@@ -312,12 +318,28 @@ function renderCartPage() {
                                 </div>
                             </div>
                             <div class="quantity-controls">
-                                <button onclick="updateCartQuantity(${item.id}, '${item.selectedSize}', '${item.selectedColor}', ${item.quantity - 1})">-</button>
+                                <button 
+                                    data-action="decrease" 
+                                    data-id="${item.id}" 
+                                    data-size="${item.selectedSize}" 
+                                    data-color="${item.selectedColor}" 
+                                    data-quantity="${item.quantity}"
+                                >-</button>
                                 <input type="number" value="${item.quantity}" class="quantity-display" data-product-id="${item.id}" min="1" readonly>
-                                <button onclick="updateCartQuantity(${item.id}, '${item.selectedSize}', '${item.selectedColor}', ${item.quantity + 1})">+</button>
+                                <button 
+                                    data-action="increase" 
+                                    data-id="${item.id}" 
+                                    data-size="${item.selectedSize}" 
+                                    data-color="${item.selectedColor}" 
+                                    data-quantity="${item.quantity}"
+                                >+</button>
                             </div>
                             <div class="item-total">$${(item.price * item.quantity).toFixed(2)}</div>
-                            <button class="remove-btn btn-danger" onclick="removeFromCart(${item.id}, '${item.selectedSize}', '${item.selectedColor}')">
+                            <button class="remove-btn btn-danger" 
+                                data-action="remove" 
+                                data-id="${item.id}" 
+                                data-size="${item.selectedSize}" 
+                                data-color="${item.selectedColor}">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
                                 </svg>
@@ -625,6 +647,18 @@ function renderAboutPage() {
                     <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxzaG9lJTIwZmFjdG9yeXxlbnwxfHx8fDE3NjIyMjAyNTd8MA&lib=rb-4.1.0&q=80&w=1080" alt="Shoe Factory" class="about-image">
                 </div>
             </div>
+            
+            <div class="section-header" style="margin-top: 4rem;">
+                <h2>Meet the Team</h2>
+            </div>
+            <div class="team-grid">
+                <div class="team-member card"><h3>jl ardimer</h3></div>
+                <div class="team-member card"><h3>john mancao</h3></div>
+                <div class="team-member card"><h3>althessa pearl diaz</h3></div>
+                <div class="team-member card"><h3>Joshua Pitogo</h3></div>
+                <div class="team-member card"><h3>Marc Angelo Ponce</h3></div>
+            </div>
+
             <div class="section-header">
                 <h2>Our Core Values</h2>
             </div>
@@ -734,6 +768,15 @@ function renderContactPage() {
                         <div>
                             <p><strong>Email</strong></p>
                             <p>support@stepstyle.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                        </svg>
+                        <div>
+                            <p><strong>Facebook</strong></p>
+                            <p><a href="https://facebook.com/jlkun25" target="_blank" style="color: var(--text-dark);">facebook.com/jlkun25</a></p>
                         </div>
                     </div>
                     <div class="contact-info-item">
@@ -856,7 +899,7 @@ function handleAddToCart(event) {
         quantity = parseInt(quantityInput.value);
     } else {
         // Product Card/Default: Use default values
-        size = product.sizes[0];
+        size = product.sizes[0].toString();
         color = product.colors[0];
         quantity = 1;
     }
@@ -874,11 +917,32 @@ function handleAddToCart(event) {
     displayMessage(`Added ${quantity} x ${product.name} to cart!`, 'success');
 }
 
+// NEW: Event delegation handler for cart actions (Fixes the cart buttons)
+function handleCartAction(event) {
+    const target = event.target.closest('button');
+    if (!target) return;
 
-function updateCartQuantity(productId, size, color, quantity) {
-    updateQuantity(productId, size, color, quantity);
-    renderPage();
+    const action = target.dataset.action;
+    const productId = parseInt(target.dataset.id);
+    const size = target.dataset.size;
+    const color = target.dataset.color;
+    const currentQuantity = parseInt(target.dataset.quantity);
+    
+    if (action === 'remove') {
+        removeFromCart(productId, size, color);
+    } else if (action === 'increase') {
+        updateQuantity(productId, size, color, currentQuantity + 1);
+    } else if (action === 'decrease') {
+        // The updateQuantity function handles quantity <= 0 by removing the item
+        updateQuantity(productId, size, color, currentQuantity - 1);
+    }
+    
+    // Re-render the page after any successful cart action
+    if (action === 'remove' || action === 'increase' || action === 'decrease') {
+        renderPage();
+    }
 }
+
 
 function switchTab(tabName) {
     const tabs = document.querySelectorAll('.tab-btn');
