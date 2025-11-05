@@ -117,6 +117,40 @@ function initPage() {
     }
 }
 
+// NEW: Banner Section Renderer
+function renderBannerSection() {
+    return `
+        <section class="banner-section section-container">
+            <div class="main-banner" onclick="navigateTo('product-details', 17)">
+                <img src="https://images.unsplash.com/photo-1511210168393-270422119c8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxzcHJpbnQlMjBzaG9lc3xlbnwxfHx8fDE3NjIzMTMyODh8MA&lib=rb-4.1.0&q=80&w=1400" alt="Running Shoes Banner">
+                <div class="banner-content">
+                    <h2>FEEL THE SPEED</h2>
+                    <p>Introducing the new Velocity Racer. Lightweight. Dynamic. Unstoppable.</p>
+                    <button class="btn-primary">Shop Running</button>
+                </div>
+            </div>
+
+            <div class="sub-banner-grid">
+                <div class="sub-banner card" onclick="navigateTo('product-details', 18)">
+                    <img src="https://images.unsplash.com/photo-1600329068065-27a4d6219803?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxiYXNrZXRiYWxsJTIwc2hvZXN8ZW58MXx8fHwxNzYzMDYwMzAxfDA&lib=rb-4.1.0&q=80&w=700" alt="Basketball Banner">
+                    <div class="banner-content">
+                        <h3>COURT DOMINANCE</h3>
+                        <p>High-Top Court collection is here.</p>
+                    </div>
+                </div>
+                <div class="sub-banner card" onclick="navigateTo('product-details', 15)">
+                    <img src="https://images.unsplash.com/photo-1547379051-9e79e604752c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHx0cmFpbCUyMHJ1bm5pbmclMjBzaG9lc3xlbnwxfHx8fDE3NjIzMTMyMzN8MA&lib=rb-4.1.0&q=80&w=700" alt="Trail Shoes Banner">
+                    <div class="banner-content">
+                        <h3>TRAIL BLAZERS</h3>
+                        <p>Outdoor rugged support.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    `;
+}
+
+// MODIFIED: Added renderBannerSection() call
 function renderHomePage() {
     const featuredProducts = loadFeaturedProducts();
     return `
@@ -128,7 +162,7 @@ function renderHomePage() {
                     <button class="btn-primary" onclick="navigateTo('products')">Shop Now</button>
                 </div>
                 <div class="hero-image">
-                    <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxzaG9lc3xlbnwxfHx8fDE3NjIyMTkxNjl8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Premium Shoes">
+                    <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxzaG9lc3xlbnwxfHx8fDE3NjIyMTkxNjl8MA&lib=rb-4.1.0&q=80&w=1080" alt="Premium Shoes">
                 </div>
             </div>
         </section>
@@ -175,6 +209,8 @@ function renderHomePage() {
                 </div>
             </div>
         </section>
+
+        ${renderBannerSection()}
 
         <section class="featured-products">
             <div class="section-container">
@@ -836,6 +872,7 @@ function generateStars(rating) {
 }
 
 function loadFeaturedProducts() {
+    // Load first 4 products
     return products.slice(0, 4);
 }
 
@@ -900,6 +937,7 @@ function handleAddToCart(event) {
         quantity = parseInt(quantityInput.value);
     } else {
         // Product Card/Default: Use default values
+        // Note: products array comes from src/data.js and contains sizes/colors
         size = product.sizes[0].toString();
         color = product.colors[0];
         quantity = 1;
