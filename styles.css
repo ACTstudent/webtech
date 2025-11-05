@@ -787,6 +787,21 @@ body {
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
 }
 
+/* NEW: Team Grid Styles */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.team-member.card {
+    /* Uses existing .card style for border/shadow and applies specific padding */
+    padding: 1.5rem;
+    background: var(--bg-light);
+}
+
 .values-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -825,7 +840,7 @@ body {
     background: linear-gradient(to right, #2c3e50, #4c627a);
     color: white;
     padding: 4rem 2rem;
-    text-align: center;
+    text-align: center; /* Adjustment for centered text */
 }
 
 .contact-page {
@@ -958,6 +973,11 @@ footer {
     }
 
     .values-grid, .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Responsive team grid fix */
+    .team-grid {
         grid-template-columns: 1fr;
     }
 
