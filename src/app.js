@@ -110,6 +110,7 @@ function initPage() {
     }
 
     // FIX: Cart Action Handler using delegation
+    // This is the listener that makes the +,-, and remove buttons work after every render.
     const cartItemsContainer = document.getElementById('cart-items-container');
     if (cartItemsContainer) {
         cartItemsContainer.addEventListener('click', handleCartAction);
@@ -995,7 +996,7 @@ function handleProfileUpdate(event) {
 
 function handleContact(event) {
     event.preventDefault();
-    displayMessage('Thank you for your message! We\'ll get back to you soon.');
+    displayMessage('Thank thank you for your message! We\'ll get back to you soon.');
     event.target.reset();
 }
 
