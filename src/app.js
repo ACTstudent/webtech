@@ -7,27 +7,28 @@ let currentFilters = {
     search: ''
 };
 
-// Helper function for user feedback (Replaces alert())
-function displayMessage(message, type = 'success') {
-    // This is a placeholder for a proper toast/modal system.
-    // Use console.log for silent feedback in this environment, but this function
-    // is where you would integrate a non-blocking UI notification.
-    console.log(`[${type.toUpperCase()}] ${message}`);
-    alert(message);
-}
+// NEW: Global variable for current checkout state
+let currentOrder = {
+    id: null,
+    shippingInfo: {},
+    paymentMethod: 'credit-card',
+    total: 0
+};
 
-function navigateTo(page, productId = null) {
+// MODIFIED: Added orderId parameter
+function navigateTo(page, productId = null, orderId = null) {
     currentPage = page;
     if (productId) {
-        // Ensure products array is available (from data.js)
-        if (typeof products !== 'undefined') {
-            currentProduct = products.find(p => p.id === productId);
-        }
+        currentProduct = products.find(p => p.id === productId);
+    }
+    if (orderId) {
+        currentOrder.id = orderId;
     }
     renderPage();
     window.scrollTo(0, 0);
 }
 
+// MODIFIED: Added new cases for checkout and confirmation
 function renderPage() {
     const mainContent = document.getElementById('main-content');
     switch (currentPage) {
@@ -42,6 +43,12 @@ function renderPage() {
             break;
         case 'cart':
             mainContent.innerHTML = renderCartPage();
+            break;
+        case 'checkout-details': // NEW
+            mainContent.innerHTML = renderCheckoutDetailsPage();
+            break;
+        case 'order-confirmation': // NEW
+            mainContent.innerHTML = renderOrderConfirmationPage();
             break;
         case 'login':
             mainContent.innerHTML = renderLoginPage();
@@ -90,6 +97,12 @@ function initPage() {
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
         contactForm.addEventListener('submit', handleContact);
+    }
+    
+    // NEW: Checkout form handler
+    const checkoutForm = document.getElementById('checkout-form');
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', handleCheckout);
     }
 }
 
@@ -264,12 +277,7 @@ function renderProductDetailsPage() {
 }
 
 function renderCartPage() {
-    // Access global 'cart' and 'getCartTotal' from src/cart.js
-    if (typeof cart === 'undefined' || typeof getCartTotal === 'undefined') {
-        return `<section class="empty-cart"><div class="section-container"><h1>Cart System Error</h1><p>The cart system is not initialized correctly.</p></div></section>`;
-    }
-    
-    const cartItems = cart; 
+    const cartItems = cart; // Access global 'cart' variable from src/cart.js
     const total = getCartTotal();
 
     if (cartItems.length === 0) {
@@ -327,7 +335,154 @@ function renderCartPage() {
                         <span>Total:</span>
                         <span>$${total.toFixed(2)}</span>
                     </div>
-                    <button class="btn-primary" style="width: 100%;">Checkout</button>
+                    <button class="btn-primary" style="width: 100%;" onclick="navigateTo('checkout-details')">Proceed to Checkout</button>
+                </div>
+            </div>
+        </section>
+    `;
+}
+
+// NEW: Checkout Details Page
+function renderCheckoutDetailsPage() {
+    const total = getCartTotal();
+    
+    if (getCartCount() === 0) {
+        displayMessage("Your cart is empty. Please add items before checking out.", 'error');
+        return renderProductsPage();
+    }
+    
+    // Redirect unauthenticated users
+    if (!currentUser) {
+        displayMessage("Please log in to proceed to checkout.", 'info');
+        navigateTo('login');
+        return '';
+    }
+
+    // Prefill data from user profile
+    const name = currentUser.name || '';
+    const email = currentUser.email || '';
+    const address = currentUser.address || '';
+    const phone = currentUser.phone || '';
+
+    return `
+        <section class="checkout-page">
+            <div class="section-container">
+                <h1>Checkout</h1>
+                <div class="checkout-grid">
+                    <div class="checkout-form-container">
+                        <h2>Shipping Information</h2>
+                        <form id="checkout-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="shipping-name">Full Name</label>
+                                    <input type="text" id="shipping-name" name="name" value="${name}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="shipping-email">Email</label>
+                                    <input type="email" id="shipping-email" name="email" value="${email}" required>
+                                </div>
+                                <div class="form-group" style="grid-column: 1 / -1;">
+                                    <label for="shipping-address">Shipping Address</label>
+                                    <textarea id="shipping-address" name="address" rows="3" required>${address}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="shipping-city">City</label>
+                                    <input type="text" id="shipping-city" name="city" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="shipping-zip">ZIP Code</label>
+                                    <input type="text" id="shipping-zip" name="zip" required>
+                                </div>
+                            </div>
+                            
+                            <h2 style="margin-top: 2rem;">Payment</h2>
+                            <div class="form-group">
+                                <label for="payment-method">Payment Method</label>
+                                <select id="payment-method" name="payment-method">
+                                    <option value="credit-card">Credit Card (Simulated)</option>
+                                    <option value="paypal">PayPal (Simulated)</option>
+                                </select>
+                            </div>
+                            <p style="color: var(--text-gray); font-size: 0.9rem; margin-bottom: 1rem;">Payment simulation: No real payment processing will occur.</p>
+                            
+                            <button type="submit" class="btn-primary" style="width: 100%;">Place Order ($${total.toFixed(2)})</button>
+                        </form>
+                    </div>
+
+                    <div class="cart-summary checkout-summary">
+                        <h2>Order Summary</h2>
+                        <div class="checkout-items">
+                            ${cart.map(item => `
+                                <div class="checkout-item">
+                                    <img src="${item.image}" alt="${item.name}" class="checkout-item-image">
+                                    <div class="checkout-item-info">
+                                        <p class="font-weight-bold">${item.name}</p>
+                                        <p class="checkout-item-meta">${item.selectedSize} / ${item.selectedColor} / Qty: ${item.quantity}</p>
+                                    </div>
+                                    <div class="item-total">$${(item.price * item.quantity).toFixed(2)}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span>$${total.toFixed(2)}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping:</span>
+                            <span>Free</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span>$${total.toFixed(2)}</span>
+                        </div>
+                        <p style="margin-top: 1rem; text-align: center;"><a href="#" onclick="navigateTo('cart')">Edit Cart</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    `;
+}
+
+// NEW: Order Confirmation Page
+function renderOrderConfirmationPage() {
+    const orderId = currentOrder.id || 'N/A';
+    const total = currentOrder.total.toFixed(2);
+    const shipping = currentOrder.shippingInfo;
+    
+    // Reset temporary order data
+    const lastOrderTotal = currentOrder.total;
+    const lastOrderShipping = {...currentOrder.shippingInfo};
+    currentOrder = { id: null, shippingInfo: {}, paymentMethod: 'credit-card', total: 0 };
+
+    return `
+        <section class="order-confirmation">
+            <div class="section-container">
+                <div class="card" style="max-width: 600px; margin: 0 auto; text-align: center;">
+                    <div class="success-icon">
+                        <div class="success-circle" style="background: var(--success); margin: 0 auto 1.5rem;">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-8.91"/>
+                                <path d="M22 4L12 14.01l-3-3"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <h1>Order Placed Successfully!</h1>
+                    <p class="lead" style="color: var(--text-gray);">Thank you for your purchase. Your order details are below.</p>
+                    <h2 style="margin-top: 2rem;">Order #${orderId}</h2>
+                    <p><strong>Total Paid:</strong> <span class="price">$${lastOrderTotal.toFixed(2)}</span></p>
+                    
+                    <div class="card" style="text-align: left; margin-top: 2rem; background: var(--bg-light); border: 1px solid var(--border);">
+                        <h4 style="border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 1rem; font-size: 1.1rem;">Shipping To:</h4>
+                        <p><strong>${lastOrderShipping.name || 'Customer'}</strong></p>
+                        <p>${lastOrderShipping.address || 'Address line 1'}</p>
+                        <p>${lastOrderShipping.city || 'City'}, ${lastOrderShipping.zip || 'Zip Code'}</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-gray);">Expected delivery in 5-7 business days.</p>
+                    </div>
+
+                    <div style="margin-top: 2rem;">
+                        <button class="btn-secondary" onclick="navigateTo('products')">Continue Shopping</button>
+                        <button class="btn-primary" onclick="navigateTo('account')" style="margin-left: 1rem;">View Orders</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -745,6 +900,42 @@ function handleContact(event) {
     event.preventDefault();
     displayMessage('Thank you for your message! We\'ll get back to you soon.');
     event.target.reset();
+}
+
+// NEW: Checkout Handler
+function handleCheckout(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const formValues = Object.fromEntries(formData);
+    
+    const shippingInfo = {
+        name: formValues.name,
+        email: formValues.email,
+        address: formValues.address,
+        city: formValues.city,
+        zip: formValues.zip
+    };
+    
+    const total = getCartTotal();
+    
+    // Call the cart logic to finalize the order
+    const orderId = placeOrder(shippingInfo, total);
+
+    // Update the temporary global order object for the confirmation page
+    currentOrder.shippingInfo = shippingInfo;
+    currentOrder.total = total;
+    currentOrder.paymentMethod = formValues['payment-method'];
+    
+    displayMessage(`Order #${orderId} successfully placed!`, 'success');
+    
+    // Navigate to confirmation page, passing the order ID
+    navigateTo('order-confirmation', null, orderId);
+}
+
+function displayMessage(message, type = 'success') {
+    // Retaining the alert() for visible feedback in the current environment
+    console.log(`[${type.toUpperCase()}] ${message}`);
+    alert(message);
 }
 
 // Initialize the app when the DOM is fully loaded
