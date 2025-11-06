@@ -172,7 +172,7 @@ const products = [
         id: 15,
         name: "Trail Blazer X",
         price: 189.99,
-        image: "https://images.unsplash.com/photo-1620023402773-19a973273e51?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHx0cmFpbCUyMHNob2VzfGVufDF8fHx8MTc2Mjg4ODkzMnww&lib=rb-4.1.0&q=80&w=1080", // Updated image link
+        image: "https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto/9cbfa158-b902-42d9-8b6c-abf14fbe656b/KOBE+AIR+FORCE+1+LOW.png", // Updated image link
         category: "Outdoor",
         description: "Rugged and supportive trail running shoe built for the most challenging off-road environments.",
         sizes: [8, 9, 10, 11, 12, 13],
