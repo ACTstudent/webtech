@@ -133,7 +133,6 @@ body {
     font-weight: 700;
 }
 
-/* Buttons - Bold, rounded, and black or outline */
 .btn-primary, .btn-outline, .btn-secondary, .btn-danger {
     padding: 0.75rem 1.75rem;
     border-radius: 1000px; /* Fully rounded pill shape */
@@ -227,17 +226,19 @@ body {
     text-align: center;
 }
 
+/* FIX: Hero container to use a modern two-column grid on desktop */
 .hero-container {
     max-width: 1440px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr; /* Single column for full width product focus */
-    gap: 1rem;
-    text-align: center;
+    grid-template-columns: 1fr 1fr; /* Two columns for content and image */
+    gap: 5rem;
+    text-align: left; /* Default text alignment for content column */
+    align-items: center;
 }
 
 .hero-content {
-    order: 2;
+    order: 1; /* Content first on desktop */
 }
 
 .hero h1 {
@@ -252,18 +253,18 @@ body {
     font-size: 1.5rem;
     color: var(--text-gray);
     max-width: 800px;
-    margin: 1.5rem auto 3rem;
+    margin: 1.5rem 0 3rem; /* Adjusted margin for left alignment */
 }
 
 .hero-image {
-    order: 1; /* Place image above content on desktop */
-    margin-bottom: 2rem;
+    order: 2; /* Image second on desktop */
+    margin-bottom: 0;
 }
 
 .hero-image img {
     width: 100%;
-    height: 550px; /* Taller image for impact */
-    object-fit: contain; /* Products are contained against a white background */
+    height: 500px; /* Taller image for impact */
+    object-fit: cover; /* FIX: Use cover to fill the container, which should fix image display issues */
     border-radius: var(--border-radius);
     box-shadow: none;
 }
@@ -375,7 +376,7 @@ body {
 .product-image {
     width: 100%;
     height: 380px; /* Taller image for impact */
-    object-fit: contain; /* Product contained */
+    object-fit: cover; /* FIX: Use cover to fill the container */
     transition: transform 0.3s;
 }
 
@@ -445,7 +446,7 @@ body {
 .product-images img.main-image {
     width: 100%;
     height: 600px;
-    object-fit: contain;
+    object-fit: cover; /* FIX: Use cover to fill the container */
     border-radius: var(--border-radius);
     border: none;
     background: var(--bg-gray);
@@ -459,7 +460,54 @@ body {
     border-bottom: 1px solid var(--border);
 }
 
-/* Cart Page */
+/* Cart Page - General fixes */
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Spread content out */
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+    gap: 1rem;
+}
+
+.cart-item-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    flex-shrink: 0;
+}
+
+.cart-item-info {
+    flex-grow: 1;
+    margin-right: 1rem;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.quantity-controls button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: white;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.quantity-display {
+    width: 40px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-weight: 700;
+}
+
+
 .cart-summary, .checkout-summary {
     background: var(--bg-gray);
     border: none;
@@ -640,16 +688,22 @@ footer {
         display: flex;
     }
 
+    /* FIX: Hero container to single column on mobile */
     .hero-container {
         grid-template-columns: 1fr;
-        text-align: left;
+        text-align: center; /* Center content on smaller screens */
+        gap: 2rem;
     }
     .hero-content {
         order: 2;
-        text-align: left;
+        text-align: center;
     }
     .hero-image {
         order: 1;
+        margin-bottom: 1rem;
+    }
+    .hero p {
+        margin: 1.5rem auto 3rem; /* Center paragraph text */
     }
 
     .product-details-grid, .cart-grid, .contact-content-grid, .checkout-grid {
@@ -708,22 +762,33 @@ footer {
         grid-template-columns: 1fr;
     }
 
-    /* Responsive Cart Fix */
+    /* FIX: Responsive Cart Item Alignment */
     .cart-item {
         flex-wrap: wrap;
-        text-align: center;
-        justify-content: center;
+        justify-content: flex-start;
+        align-items: flex-start;
+        text-align: left;
+    }
+    .cart-item-image {
+        margin-right: 1rem;
     }
     .cart-item-info {
-        flex-basis: 100%;
-        margin-bottom: 1rem;
+        flex-basis: auto; 
+        max-width: calc(100% - 120px); /* Leave space for remove button if it's on the top line */
+        margin-bottom: 0; 
     }
-    .item-total {
-        min-width: unset;
-        text-align: center;
+    .remove-btn {
+        order: 2; 
+        margin-left: auto; 
     }
     .quantity-controls {
-        margin: 0 auto;
+        order: 3; 
+        margin: 1rem 0 0 0; /* Align left */
+    }
+    .item-total {
+        order: 4; 
+        margin: 1rem 0 0 auto; /* Push to the right */
+        font-weight: bold;
     }
 }
 
