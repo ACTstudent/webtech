@@ -811,3 +811,43 @@ footer {
         font-size: 2rem;
     }
 }
+/* ... (Previous styles) ... */
+
+/* About Page */
+.about-hero {
+    background: var(--bg-gray);
+}
+.about-image {
+    border: none;
+}
+.value-card {
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* FIX: Added team-grid specific styles for alignment */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+    padding: 0 2rem; /* Ensure it respects padding */
+}
+
+.team-member {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.team-member h3 {
+    text-transform: capitalize;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* Contact Page */
+.contact-hero {
+/* ... (rest of styles.css) ... */        
