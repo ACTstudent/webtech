@@ -119,27 +119,28 @@ function initPage() {
 
 // NEW: Banner Section Renderer
 function renderBannerSection() {
+    // UPDATED: Changed product IDs to reference existing products (1, 5, 9)
     return `
         <section class="banner-section section-container">
-            <div class="main-banner" onclick="navigateTo('product-details', 17)">
-                <img src="https://images.unsplash.com/photo-1511210168393-270422119c8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxzcHJpbnQlMjBzaG9lc3xlbnwxfHx8fDE3NjIzMTMyODh8MA&lib=rb-4.1.0&q=80&w=1400" alt="Running Shoes Banner">
+            <div class="main-banner" onclick="navigateTo('product-details', 1)">
+                <img src="https://images.unsplash.com/photo-1597892657493-6847b9640bac?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxydW5uaW5nJTIwc2hvZXN8ZW58MXx8fHwxNzYyMjE5MTI2fDA&lib=rb-4.1.0&q=80&w=1080" alt="Running Shoes Banner">
                 <div class="banner-content">
                     <h2>FEEL THE SPEED</h2>
-                    <p>Introducing the new Velocity Racer. Lightweight. Dynamic. Unstoppable.</p>
+                    <p>Introducing the new Air Runner Pro. Lightweight. Dynamic. Unstoppable.</p>
                     <button class="btn-primary">Shop Running</button>
                 </div>
             </div>
 
             <div class="sub-banner-grid">
-                <div class="sub-banner card" onclick="navigateTo('product-details', 18)">
-                    <img src="https://images.unsplash.com/photo-1600329068065-27a4d6219803?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxiYXNrZXRiYWxsJTIwc2hvZXN8ZW58MXx8fHwxNzYzMDYwMzAxfDA&lib=rb-4.1.0&q=80&w=700" alt="Basketball Banner">
+                <div class="sub-banner card" onclick="navigateTo('product-details', 5)">
+                    <img src="https://images.unsplash.com/photo-1605348532760-6753d2c43329?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxiYXNrZXRiYWxsJTIwc2hvZXN8ZW58MXx8fHwxNzYyMjQ2OTIyfDA&lib=rb-4.1.0&q=80&w=1080" alt="Basketball Banner">
                     <div class="banner-content">
                         <h3>COURT DOMINANCE</h3>
-                        <p>High-Top Court collection is here.</p>
+                        <p>Basketball Elite collection is here.</p>
                     </div>
                 </div>
-                <div class="sub-banner card" onclick="navigateTo('product-details', 15)">
-                    <img src="https://images.unsplash.com/photo-1547379051-9e79e604752c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHx0cmFpbCUyMHJ1bm5pbmclMjBzaG9lc3xlbnwxfHx8fDE3NjIzMTMyMzN8MA&lib=rb-4.1.0&q=80&w=700" alt="Trail Shoes Banner">
+                <div class="sub-banner card" onclick="navigateTo('product-details', 9)">
+                    <img src="https://images.unsplash.com/photo-1631287381310-925554130169?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxoaWtpbmclMjBib290c3xlbnwxfHx8fDE3NjIyMjYzMzZ8MA&lib=rb-4.1.0&q=80&w=1080" alt="Trail Shoes Banner">
                     <div class="banner-content">
                         <h3>TRAIL BLAZERS</h3>
                         <p>Outdoor rugged support.</p>
