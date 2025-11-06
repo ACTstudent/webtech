@@ -172,7 +172,7 @@ const products = [
         id: 15,
         name: "Trail Blazer X",
         price: 189.99,
-        image: "https://images.unsplash.com/photo-1547379051-9e79e604752c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHx0cmFpbCUyMHJ1bm5pbmclMjBzaG9lc3xlbnwxfHx8fDE3NjIzMTMyMzN8MA&lib=rb-4.1.0&q=80&w=1080",
+        image: "https://images.unsplash.com/photo-1631387693527-dc53229b43d2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxydWdnZWQlMjB0cmFpbCUyMHJ1bm5pbmclMjBzaG9lfGVufDF8fHx8MTc2MjYwNjU1MHww&lib=rb-4.1.0&q=80&w=1080", // FIXED IMAGE
         category: "Outdoor",
         description: "Rugged and supportive trail running shoe built for the most challenging off-road environments.",
         sizes: [8, 9, 10, 11, 12, 13],
