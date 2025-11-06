@@ -523,7 +523,7 @@ function renderOrderConfirmationPage() {
             <div class="section-container">
                 <div class="card" style="max-width: 600px; margin: 0 auto; text-align: center;">
                     <div class="success-icon">
-                        <div class="success-circle" style="background: var(--success); margin: 0 auto 1.5rem;">
+                        <div class="success-circle">
                             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-8.91"/>
                                 <path d="M22 4L12 14.01l-3-3"/>
@@ -674,7 +674,7 @@ function renderAboutPage() {
             <h1>Our Story</h1>
             <p>Blending comfort, quality, and fashion since day one.</p>
         </section>
-        <section class="about-section">
+        <div class="about-section">
             <div class="about-grid">
                 <div class="about-content">
                     <h1>About StepStyle</h1>
@@ -751,7 +751,7 @@ function renderAboutPage() {
                     Follow on Instagram
                 </a>
             </div>
-        </section>
+        </div>
     `;
 }
 
