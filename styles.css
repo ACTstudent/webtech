@@ -848,6 +848,7 @@ body {
 }
 .value-card {
     padding: 2rem;
+    background: white;
     border-radius: var(--border-radius);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
@@ -900,17 +901,30 @@ body {
 }
 
 /* Contact Page */
+.contact-page {
+    background: var(--bg-light);
+}
+
+/* UPDATED STYLES FOR CONTACT PAGE CENTERING */
 .contact-hero {
     background: var(--bg-gray);
+    text-align: center; /* Center text in the hero */
+    padding: 4rem 2rem;
 }
+
 .contact-content-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(300px, 1fr) minmax(200px, 0.6fr); /* Adjusted column ratio */
     gap: 3rem;
-    max-width: 1440px;
-    margin: 0 auto;
+    max-width: 1000px; /* Set a max width for the grid content */
+    margin: 0 auto; /* Center the grid container itself */
     padding: 3rem 2rem;
 }
+
+.contact-form-container {
+    /* Existing styles maintained */
+}
+
 .contact-info-card {
     background: var(--bg-gray);
     border: none;
@@ -930,6 +944,8 @@ body {
 .contact-info-item p {
     margin: 0;
 }
+/* END UPDATED STYLES FOR CONTACT PAGE CENTERING */
+
 
 /* Banner Section */
 .banner-section {
